@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <meta charset="UTF-8">
+        <title> Homepage </title>
+        
+        <div class="head_style">
+            <button class="button1"> 
+                <a href="/home/" style="color:white;"> Home </a> 
+            </button>
+            <h2 style="display: inline-block; color: whitesmoke;"> 네, 동, 뭐 </h2>
+            <button class="button2"> 
+                <a href="/" style="color:white;"> Log out </a> 
+            </button>
+        </div>
+
+    </head>
+    <body style="background-color:#323232; margin:0 auto;">
+        <div class="div1">
+            <div class="div_inbox">
+                <p style="text-align: center; font-size: 18px;">Notice</p>
+                <hr/>
+                {% for notice in notices %}
+                    <p style="margin-left: 5%;"><a href="/home/notice/{{notice.pk}}/" style="font-size: 12px;">{{notice.title}}</a></p>
+                {% endfor %}
+            </div>
+            <div class="div_inbox">
+                <p style="text-align: center; font-size: 18px;">Manual</p>
+                <hr/>
+                {% for manual in manuals %}
+                    <p style="margin-left: 5%;"><a href="/home/manual/{{manual.pk}}/" style="font-size: 12px;">{{manual.title}}</a></p>
+                {% endfor %}
+            </div>
+            <div class="div_inbox">
+                <p style="text-align: center; font-size: 18px;"> Club 행사 정보 </p>
+                <hr/>
+                {% for festival in festivals %}
+                    {% if festival.title != None %}
+                        <p style="margin-left: 5%;"><a href="/home/club/{{festival.club.pk}}/" style="font-size: 12px;">{{festival.title}}</a></p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="div2">
+            <div class="div_inbox">
+                <p style="text-align: center; font-size: 18px;"> 자치단체 </p>
+                <hr/>
+                {% for club in clubs %}
+                    {% if club.club_type == '자치' %}
+                        <p style="margin-left: 5%;"><a href="/home/club/{{club.pk}}/" style="font-size: 12px;">{{club.name}}</a></p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="div_inbox">
+                <p style="text-align: center; font-size: 18px;"> 중앙 동아리 </p>
+                <hr/>
+                {% for club in clubs %}
+                    {% if club.club_type == '중앙' %}
+                        <p style="margin-left: 5%;"><a href="/home/club/{{club.pk}}/" style="font-size: 12px;">{{club.name}}</a></p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="div3">
+            <div class="div3_inbox">
+                <p style="text-align: center; font-size: 18px;"> 일반 동아리 </p>
+                <hr/>
+                <div class="div3_inbox_horizontal">
+                    <div class="div3_inbox_inbox">
+                        <p style="text-align: center; font-size: 14px;"> 공연 </p>
+                        {% for club in clubs %}
+                            {% if club.club_type == '일반' and club.category == '공연' %}
+                                <p style="margin-left: 5%;"><a href="/home/club/{{club.pk}}/" style="font-size: 12px;">{{club.name}}</a></p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="div3_inbox_inbox">
+                        <p style="text-align: center; font-size: 14px;"> 취미 </p>
+                        {% for club in clubs %}
+                            {% if club.club_type == '일반' and club.category == '취미' %}
+                                <p style="margin-left: 5%;"><a href="/home/club/{{club.pk}}/" style="font-size: 12px;">{{club.name}}</a></p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <hr style="width: 95%">
+                <div class="div3_inbox_horizontal">
+                    <div class="div3_inbox_inbox">
+                        <p style="text-align: center; font-size: 14px;"> 스포츠 </p>
+                        {% for club in clubs %}
+                            {% if club.club_type == '일반' and club.category == '스포츠' %}
+                                <p style="margin-left: 5%;"><a href="/home/club/{{club.pk}}/" style="font-size: 12px;">{{club.name}}</a></p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="div3_inbox_inbox">
+                        <p style="text-align: center; font-size: 14px;"> 공부 </p>
+                        {% for club in clubs %}
+                            {% if club.club_type == '일반' and club.category == '공부' %}
+                                <p style="margin-left: 5%;"><a href="/home/club/{{club.pk}}/" style="font-size: 12px;">{{club.name}}</a></p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

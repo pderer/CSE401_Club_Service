@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% block content %}
+  {% if club %}
+    <div>
+      <h2>{{club.name}}</h2>
+    </div>
+    <div class="container-fluid border border-dark">
+
+      <div class="row">
+
+        <div class="col-8">
+          <h5>활동 내역</h5>
+          <a href="{% url 'blog_create' club_id=club.id %}" class="btn btn-sm btn-outline-secondary">활동내역 작성</a>
+          {% if blog_list %}
+            <div>
+              {% for blog in blog_list %}
+                <div class="container-fluid text-center border border-dark" style="cursor: pointer;" onclick="location.href='{% url 'blog' club_id=club.id blog_id=blog.id %}';">
+                  <div class="row">
+                    {% if blog.image %}
+                      <div class="col">
+                        <img src="{{ blog.image.url }}" width="100" height="100">
+                      </div>
+                    {% endif %}
+                    <div class="col-10">
+                      <div class="row">
+                        <div class="col">제목 :
+                          {{blog.title}}</div>
+                        <div class="col">작성 일시 :
+                          {{blog.update_date | date:"y/m/d H:i"}}</div>
+                        <div class="col">조회수 :
+                          {{blog.view_count}}</div>
+                      </div>
+                      <div class="row text-center">
+                        내용 :
+                        {{blog.information}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+          <!-- 페이징처리 시작 -->
+          <ul class="pagination justify-content-center">
+            <!-- 이전페이지 -->
+            {% if blog_list.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?blog_page={{ blog_list.previous_page_number }}">이전</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+              </li>
+            {% endif %}
+            <!-- 페이지리스트 -->
+            {% for page_number in blog_list.paginator.page_range %}
+              {% if page_number == blog_list.number %}
+                <li class="page-item active" aria-current="page">
+                  <a class="page-link" href="?blog_page={{ page_number }}">{{ page_number }}</a>
+                </li>
+              {% else %}
+                <li class="page-item">
+                  <a class="page-link" href="?blog_page={{ page_number }}">{{ page_number }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+            <!-- 다음페이지 -->
+            {% if blog_list.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?blog_page={{ blog_list.next_page_number }}">다음</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+              </li>
+            {% endif %}
+          </ul>
+          <!-- 페이징처리 끝 -->
+        </div>
+        <div class="col border border-dark">
+          <div>
+            <div>
+              <div class="border border-dark">
+                <h5>일정</h5>
+                <a href="{% url 'calendar_create' club_id=club.id %}" class="btn btn-sm btn-outline-secondary">일정 작성</a>
+                {% if calendar_list %}
+                  <div>
+                    {% for calendar in calendar_list %}
+                      <div class="container-fluid border border-dark">
+                        <div class="row">
+                          <div class="col-10">
+                            <div>
+                              제목 :
+                              {{calendar.title}}
+                            </div>
+                            <div>
+                              내용 :
+                              {{calendar.information}}
+                            </div>
+                            <div>
+                              시작 :
+                              {{calendar.start_day}}
+                            </div>
+                            <div>
+                              종료 :
+                              {{calendar.finish_day}}
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div>
+                              <a href="{% url 'calendar_modify' calendar.club.id calendar.id %}" class="btn btn-sm btn-outline-secondary">수정</a>
+                            </div>
+                            <div>
+                              <a href="{% url 'calendar_delete' calendar.club.id calendar.id  %}" class="btn btn-sm btn-outline-secondary">삭제</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <!-- 페이징처리 시작 -->
+              <ul class="pagination justify-content-center">
+                <!-- 이전페이지 -->
+                {% if calendar_list.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?calendar_page={{ calendar_list.previous_page_number }}">이전</a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+                  </li>
+                {% endif %}
+                <!-- 페이지리스트 -->
+                {% for page_number in calendar_list.paginator.page_range %}
+                  {% if page_number == calendar_list.number %}
+                    <li class="page-item active" aria-current="page">
+                      <a class="page-link" href="?calendar_page={{ page_number }}">{{ page_number }}</a>
+                    </li>
+                  {% else %}
+                    <li class="page-item">
+                      <a class="page-link" href="?calendar_page={{ page_number }}">{{ page_number }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+                <!-- 다음페이지 -->
+                {% if calendar_list.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?calendar_page={{ calendar_list.next_page_number }}">다음</a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+                  </li>
+                {% endif %}
+              </ul>
+              <!-- 페이징처리 끝 -->
+            </div>
+            <div class="border border-dark">
+              <h5>회비</h5>
+              <a href="{% url 'list_create' club_id=club.id %}" class="btn btn-sm btn-outline-secondary">회비 추가</a>
+              {% if list_list %}
+                <div>
+                  {% for list in list_list %}
+                    <div class="container border border-dark">
+                      <div class="row">
+                        <div class="col-10">
+                          <div>
+                            제목 :
+                            {{list.title}}
+                          </div>
+                          <div>
+                            내용 :
+                            {{list.information}}
+                          </div>
+                          <div>
+                            종료 :
+                            {{list.due_date}}
+                          </div>
+                          <div>
+                            액수 :
+                            {{list.money}}원
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div>
+                            <a href="{% url 'list_modify' list.club.id list.id  %}" class="btn btn-sm btn-outline-secondary">수정</a>
+                          </div>
+                          <div>
+                            <a href="{% url 'list_delete' list.club.id list.id  %}" class="btn btn-sm btn-outline-secondary">삭제</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+            <!-- 페이징처리 시작 -->
+            <ul class="pagination justify-content-center">
+              <!-- 이전페이지 -->
+              {% if list_list.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?list_page={{ list_list.previous_page_number }}">이전</a>
+                </li>
+              {% else %}
+                <li class="page-item disabled">
+                  <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+                </li>
+              {% endif %}
+              <!-- 페이지리스트 -->
+              {% for page_number in list_list.paginator.page_range %}
+                {% if page_number == list_list.number %}
+                  <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="?list_page={{ page_number }}">{{ page_number }}</a>
+                  </li>
+                {% else %}
+                  <li class="page-item">
+                    <a class="page-link" href="?list_page={{ page_number }}">{{ page_number }}</a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+              <!-- 다음페이지 -->
+              {% if list_list.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?list_page={{ list_list.next_page_number }}">다음</a>
+                </li>
+              {% else %}
+                <li class="page-item disabled">
+                  <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+                </li>
+              {% endif %}
+            </ul>
+            <!-- 페이징처리 끝 -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <div>
+    클럽이 없습니다.
+  </div>
+{% endif %}
+<button> <a href="/home/">return to home </a> </button>
+{% endblock %}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <body style="background-color: black">
+    <div style="width:100px; height: 300px; text-align: center; line-height: 30px; margin:0 auto;"></div>
+
+    <form action="" method="POST">
+      <div style="text-align: center; height: 50px;">
+        <p style="color : white; font-size: 30px;">
+          DGIST CLUBS
+        </p>
+      </div>
+      {% csrf_token %}
+
+      {% for form in forms %}
+        <div style="text-align: center; height: 50px;">
+          {{ form }}
+          </div>
+        {% endfor %}
+
+        {% if error %}
+          <div style="color: white; text-align:center;">
+            {{ error }}
+          </div>
+        {% endif %}
+        <div style="text-align: center; height: 55px;">
+
+          <button type="submit" name="register-submit" value="register" style="text-align: center; width:510px; height: 50px;">
+            LOGIN
+          </button>
+
+        </div>
+      </form>
+      <div style="text-align: center; height: 55px;">
+        <a href="/register/">
+          <button style="text-align: center; width:510px; height: 50px;">
+            Registration
+          </button>
+        </a>
+      </div>
+    </body>
+
+  </html>
